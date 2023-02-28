@@ -1,0 +1,7 @@
+{% autoescape off %}
+{% comment %} Hello {{user.username}}, {% endcomment %}
+
+Click on the link to confirm your email:
+{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

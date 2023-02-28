@@ -1,0 +1,54 @@
+.body{
+   width : 100vw ;
+}
+.courses-section {
+   display : flex ;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   margin: 0;
+}
+.courses-section h1 {
+ color: brown;
+ margin: 20px 0px;
+}
+.courses-section .area{
+    width: 80%;
+    max-width: 500px;
+        /**
+         * User input values.
+         */
+        --grid-layout-gap: 20px;
+        --grid-column-count: 3;
+        --grid-item--min-width: 1px;
+        /**
+         * Calculated values.
+         */
+        --gap-count: calc(var(--grid-column-count) - 1);
+        --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+        --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+        grid-gap: var(--grid-layout-gap);
+ }
+.courses-section .grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    border-radius: 8px;
+    border-style: solid;
+    border-color: grey;
+    border-width: 1px;
+    background: white;
+    font-size: 13px ;
+  }
+.llogo{
+    width : 40px ;
+    height : 40px ;
+    margin: 10%;
+}
+.grid-item p{
+    margin-left: 5%;
+    font-size: calc(0.2vw + 10px);
+}

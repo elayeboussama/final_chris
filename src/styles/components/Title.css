@@ -1,0 +1,47 @@
+.Title{
+    width: 80vw;
+    height: fit-content;
+    max-width: 650px;
+    padding : 15px;
+    color : #081730 ;
+    background-color: #AC2719;
+    font-size: medium;
+    border-radius: 8px;
+    margin-bottom: 5%;
+    
+}
+.Title .language{
+    display: flex;
+    align-items: center;
+    justify-content:space-between ;
+
+   
+
+}
+.Title img{
+    height : 80px;
+    width : 80px;
+    margin-bottom: 10px;
+
+
+}
+.Title h2{
+    margin-right: 25%;
+    width: fit-content;
+    margin-bottom: 10px;
+
+}
+
+.Title p{
+    background-color: #E2E2E2;
+    border-radius : 8px;
+    padding: 10px;
+
+
+
+}
+
+
+
+
+

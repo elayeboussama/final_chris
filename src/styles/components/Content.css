@@ -1,0 +1,87 @@
+.closed{
+    display:none;
+}
+.chapter{
+    
+    height: fit-content;
+    max-width: 650px;
+    padding : 15px;
+    color : #fff ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: medium;
+    margin-bottom: 5%;
+    
+}
+.chapter .top{
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    
+}
+.chapter .top .icon{
+   background-color: white;
+   border-radius: 2px;
+   display: grid;
+   place-items: center;
+    
+}
+.chapter .top .icon{
+    background-color: white;
+    border-radius: 2px;
+    display: grid;
+    place-items: center;
+     
+ }
+.chapter hr {
+    width: 100%;
+}
+.lessons{
+ background-color: transparent;
+}
+.lesson{
+    margin-bottom: 15px;
+
+    padding: 15px;
+    display: grid;
+    grid-template-areas: "text text text" 
+                         "icon what what"
+                         "icon xp  xp"
+                         "button button button";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: repeat(4, 1fr) ;
+    grid-column-gap: 0px;
+    grid-row-gap: 15px;
+    width: 80vw ;
+    background-color: #fff;
+    color: black;
+    border-radius: 8px;
+    }
+.lesson .icon{
+    grid-area: icon;
+
+} 
+.lesson .text{
+    grid-area: text;
+
+}
+
+.lesson .what{
+    grid-area: what;
+}
+
+.lesson .xp{
+    grid-area: xp;
+}
+
+.lesson .button{
+    grid-area: button;
+
+}
+
+
+

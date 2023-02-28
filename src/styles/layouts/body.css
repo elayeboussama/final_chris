@@ -1,0 +1,253 @@
+#bodyland{
+    width: 100vw;
+    height: 65vh;
+    border-bottom-left-radius: 5rem;
+    border-bottom-right-radius: 5rem;
+    background-color: #071631;
+    padding: 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center ;
+    flex-direction: column;
+    display: block;
+
+}
+#bodyland .title{
+    margin: 15px;
+    width: fit-content;
+    font-size: 72px;
+    background: -webkit-linear-gradient(55deg,rgb(197, 4, 209),rgb(184, 11, 45));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+#bodyland .description{
+    margin: 15px;
+    color: white;
+    font-size: 20px;
+
+}
+  
+  #playground{
+    width: 600px;
+    height: 600px;
+    margin-top: 15vh;
+  }
+  #cube   {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    transform-style: preserve-3d;
+    display : flex ;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: transparent;
+    border-radius: 8px;
+    user-select:none;
+  }
+  .face  {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    transform-style: preserve-3d;
+    display : flex ;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #161c37;
+    border-radius: 8px;
+    user-select:none;
+  }
+  #bodyland .containe {
+    margin: 0;
+    width: 300px;
+    height: 300px;
+    perspective: 1000px; /* psst...something fun happens when this is a really small number */
+    position: absolute;
+    top: 15vh;
+    right: 15vw;
+  }
+  #dragger{
+    position: absolute;
+    top: 0vh;
+    right: 0vw;
+    width:600px;
+    height: 600px;
+    transform-style: preserve-3d;
+    user-select:none;
+    margin: 0;
+  
+  }
+  #cube .face .svg{
+    position: static;
+    margin: 15px;
+
+  }
+  .face .caption{
+    margin: 35px;
+    color: white;
+  }
+  .face img {
+    width: 120px;
+    height : 120px ;
+    
+  }
+
+  #bodyland .buttons{
+    padding: 30px;
+    position : absolute ;
+    bottom: 10vh;
+    left: 0;
+    height: 20vh;
+    max-width: 500px;
+        /**
+         * User input values.
+         */
+        --grid-layout-gap: 10px;
+        --grid-column-count: 1;
+        --grid-item--min-width: 1px;
+        /**
+         * Calculated values.
+         */
+        --gap-count: calc(var(--grid-column-count) - 1);
+        --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+        --grid-item--max-width: calc((100% - var(--total-gap-width)) / var(--grid-column-count));
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr));
+        grid-gap: var(--grid-layout-gap);
+ }
+ #bodyland .grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 20px;
+    height: 40px;
+    width: 20vw;
+    font-size: 13px ;
+    border-style: solid;
+    background-image: none;
+    cursor: pointer;
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: #232A4E;
+    background-color: #232A4E;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  
+  }
+  #bodyland #login.grid-item{
+    background-color: transparent;
+  }
+  #bodyland #login.grid-item:hover{
+    background-color: #232A4E;
+  }
+  .grid-item a{
+    color: white;
+  }
+
+  @media screen and (max-width: 950px) {
+    #bodyland{
+        width: 100vw;
+        height: 65vh;
+        border-bottom-left-radius: 5rem;
+        border-bottom-right-radius: 5rem;
+        padding: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center ;
+        flex-direction: column;
+        display: block;
+    }
+    
+    #bodyland .title{
+        margin: 15px;
+        width: fit-content;
+        font-size: 42px;
+        background: -webkit-linear-gradient(55deg,rgb(197, 4, 209),rgb(184, 11, 45));
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    #bodyland .description{
+        margin: 10px;
+        color: white;
+        font-size: 20px;
+    
+    }
+    
+      #playground{
+        
+        width: 100vw;
+        height: 100vw;
+      
+      }
+      #cube  {
+        position: absolute;
+        height: 150px;
+        width: 150px;
+        transform-style: preserve-3d;
+        display : flex ;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: transparent;
+        border-radius: 8px;
+        user-select:none;
+      }
+      .face  {
+        position: absolute;
+        height: 150px;
+        width: 150px;
+        transform-style: preserve-3d;
+        display : flex ;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #161c37;
+        border-radius: 8px;
+        user-select:none;
+    
+      }
+      #bodyland .containe {
+        margin: 0;
+        width: 150px;
+        height: 150px;
+        perspective: 500px; /* psst...something fun happens when this is a really small number */
+        position: absolute;
+        top: 315px;
+        left: 50vw;
+      }
+      #dragger{
+        position: absolute;
+        top: 155px;
+        left: 35vw;
+        width:400px;
+        height: 400px ;
+        transform-style: preserve-3d;
+        user-select:none;
+        margin: 0;
+      
+      }
+      #cube .face .svg{
+        position: static;
+        margin: 15px;
+    
+      }
+      .face .caption{
+        margin: 15px;
+        color: white;
+        font-size: 10px ;
+      }
+      .face img {
+        width: 50px;
+        height : 50px ;
+        
+      }
+    
+
+
+  }
