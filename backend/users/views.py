@@ -77,7 +77,7 @@ def ResendactivateEmail(request):
     for j in token:
         verif_token = j
     message = 'hello, here is the new link, '+' , click on the link to activate your account.'+'http://127.0.0.1:8000/users/activate/'+u_id+'/'+verif_token+'/'
-    send_mail(subject, message, from_email, [to_email], fail_silently=False)
+    send_mail(subject, message, from_email, ['mohamedaziz.chibani0@gmail.com'], fail_silently=False)
     try:
         print(force_str(urlsafe_base64_decode(uid)))
     except:
@@ -144,10 +144,11 @@ def RegisterUser(request):
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-
+    
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
+        print(user)
         # Add custom claims
         try:
             # profile = Profile.objects.get(profile_owner_id=user.id)
@@ -162,7 +163,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
            
             profile = Customer_Employees.objects.get(user_id=user.id)
             serializer = CustomerEmployeesSerializer(instance=profile)
+            print(serializer.data)
             token['user_type'] = 'customer'
+            print(token['user_type'])
 
         except:
             token['user_type'] = 'supplier'

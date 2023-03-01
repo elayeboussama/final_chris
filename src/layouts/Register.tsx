@@ -24,7 +24,7 @@ export default function SignUp() {
   const [firstname, setfirstname] = useState('');
   const [lastname, setlastname] = useState('');
   const [email, setEmail] = useState('');
-  const [emailSender, setEmailSender] = useState('');
+  const [emailSender, setEmailSender] = useState(email);
   const [emailOpen, setEmailOpen] = useState(false);
   const [pwd, setPwd] = useState('');
   const [matchPwd, setMatchPwd] = useState('');
@@ -59,7 +59,7 @@ export default function SignUp() {
     // company_id: {...companyNames.filter(e=> companyName==e.company_name )[0] }.id , company_type: {...companyNames.filter(e=> companyName==e.company_name )[0] }.company_type
 
     await axios.post(endpointsURL.register,
-        JSON.stringify(companyType == "supplier" ? { username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType, project_size: ProjectSize, expertise:Expertise,company_owner:user  } : { username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType,company_owner:user }),
+        JSON.stringify(companyType == "supplier" ? { username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType, project_size: ProjectSize, expertise:Expertise, company_owner:user  } : { username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType,company_owner:user  }),
         {
           headers: { 'Content-Type': 'application/json'},
 
@@ -73,13 +73,13 @@ export default function SignUp() {
       setPwd('');
       setMatchPwd('');
       setfirstname('');
-      setlastname('');
-      setEmail('');
+      setlastname(''); 
       setEmployeesNumber(0);
       setAddress('');
       setCompanyType(null); 
       setCompanyName('');
       }).catch(async (err)=>{
+        setOpen(true)
         setErrorRegister(true)
         setTimeout(()=>setErrorRegister(false), 10000);
         if (!err) {
@@ -147,8 +147,9 @@ export default function SignUp() {
 
 
     const sendEmail=async()=>{
-      await axios.post("http://127.0.0.1:8000/users/reactivate",
-        JSON.stringify({ email: emailSender }),
+      console.log(email)
+      await axios.post("http://127.0.0.1:8000/users/reactivate/",
+        JSON.stringify({ email: email }),
         {
           headers: { 'Content-Type': 'application/json' },
 
@@ -161,8 +162,7 @@ export default function SignUp() {
       setPwd('');
       setMatchPwd('');
       setfirstname('');
-      setlastname('');
-      setEmail('');
+      setlastname(''); 
       }).catch((err)=>{
         setCheckEmailOpen("false")
         setTimeout(()=>setCheckEmailOpen(""), 10000);
@@ -405,26 +405,7 @@ export default function SignUp() {
                       Check your email please !!  <FcGoogle onClick={()=>{window.open("https://mail.google.com/", '_blank')}} style={{cursor: "pointer"}} size={30}/>
                     </Typography>
                     <Divider />
-                    {emailOpen ?
-
-                        <TextField
-                          value={emailSender}
-                          margin="normal"
-                          required
-                          fullWidth
-                          id="email"
-                          label="Email"
-                          name="email"
-                          autoComplete="email"
-                          onChange={(e) => setEmailSender(e.target.value)}
-                        />
-                  
-                      :""
-                  
-                  }
-                    
-                    {
-                      emailOpen?
+                     
                       <Button
                         type="submit"
                         fullWidth
@@ -432,15 +413,7 @@ export default function SignUp() {
                         sx={{ mt: 3, mb: 2 }}
                         onClick={()=>sendEmail()}
                       >Send Email</Button>
-                      :
-                      <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                      onClick={()=>setEmailOpen(true)}
-                    >Resend Email</Button>
-                    }
+                       
 
 
 
