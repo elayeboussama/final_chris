@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import useAuth from "../hooks/useAuth";
 import ListDividers from '../components/list';
 import { useAuthContext } from '../hooks/useAuthContext';
- import axios from '../api/axios';
+import axios from '../api/axios';
 import { jaHira } from 'date-fns/locale';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -19,10 +19,11 @@ import { FormControl, MenuItem, Select } from '@mui/material';
 export const AddEmployee = () => {
   const auth = useAuthContext();
   console.log(auth)
-  const [user,setUser] = useState({permession:"",email:""})
+  const [user,setUser] = useState({permession:"",email:"",})
   const [dataIsReady, setDataIsReady] = React.useState(true)
   const [data, setData] = React.useState(null)
-  const Add = async () => await axios.post("http://127.0.0.1:8000/employees/invite/", {user}, {
+  
+  const Add = async () => await axios.post("http://127.0.0.1:8000/employees/invite/", {user,inviter_type:jwt_decode(auth?.user?.access).user_type}, {
     headers: {
       'Content-Type': 'application/json',
       "Authorization": `Bearer ${auth?.user?.access}`

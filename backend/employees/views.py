@@ -16,7 +16,7 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 import json
 from companies.serializers import CustomersCompanySerializer, SupplierCompanySerializer 
-from companies.models import Customers_Company
+from companies.models import Customers_Company, Supplier_Company
 from users.serializers import RegisterSerializer,UserSerializer
 from time import sleep
 # Create your views here.
@@ -46,18 +46,33 @@ def getRoutes(request):
 @api_view(['POST'])
 def InviteEmployee(request):
     print(request.data)
-    company = Customers_Company.objects.get(company_owner=request.user.username)
-    company_serializer = CustomersCompanySerializer(instance=company)
-    print(company_serializer.data)
-    permission = request.data['user']['permession']
-    companyName = company_serializer.data['company_name']
-    companyId= company_serializer.data['id']
-    company_type= company_serializer.data['company_type']
-    subject = 'Invitation to join us!'
-    from_email = request.user.email
-    to_email = request.data['user']['email']
-    message = 'ya3tk you have a new invitation from '+companyName+' ,click on the link to join ' 'http://localhost:5173/registerEmployee/'+permission+'/'+companyName+'/'+to_email+'/'+str(companyId)+'/'+company_type+'/'
-    send_mail(subject, message, from_email, [to_email], fail_silently=False)
+    if request.data['inviter_type']=='customer':
+        print('customer')
+        company = Customers_Company.objects.get(company_owner=request.user.username)
+        company_serializer = CustomersCompanySerializer(instance=company)
+        print(company_serializer.data)
+        permission = request.data['user']['permession']
+        companyName = company_serializer.data['company_name']
+        companyId= company_serializer.data['id']
+        company_type= company_serializer.data['company_type']
+        subject = 'Invitation to join us!'
+        from_email = request.user.email
+        to_email = request.data['user']['email']
+        message = 'you have a new invitation from '+companyName+' to join their company,click on the link to join ' 'http://localhost:5173/registerEmployee/'+permission+'/'+companyName+'/'+to_email+'/'+str(companyId)+'/'+company_type+'/'
+        send_mail(subject, message, from_email, [to_email], fail_silently=False)
+    else:
+        company = Summplier_Company.objects.get(company_owner=request.user.username)
+        company_serializer = SupplierCompanySerializer(instance=company)
+        print(company_serializer.data)
+        permission = request.data['user']['permession']
+        companyName = company_serializer.data['company_name']
+        companyId= company_serializer.data['id']
+        company_type= company_serializer.data['company_type']
+        subject = 'Invitation to join us!'
+        from_email = request.user.email
+        to_email = request.data['user']['email']
+        message = 'you have a new invitation from '+companyName+' to join their company,click on the link to join ' 'http://localhost:5173/registerEmployee/'+permission+'/'+companyName+'/'+to_email+'/'+str(companyId)+'/'+company_type+'/'
+        send_mail(subject, message, from_email, [to_email], fail_silently=False)
     return Response('5it 3lik')
 
 

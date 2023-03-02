@@ -78,7 +78,7 @@ export const SignUpEmployee = () => {
                 <Box component="form" onSubmit={registerEmployee} noValidate sx={{ mt: 1 }}> 
                 {/*  */}
                 <TextField
-                    defaultValue={user.companyName} 
+                    defaultValue={user.company_name} 
                     margin="normal"
                     required
                     fullWidth

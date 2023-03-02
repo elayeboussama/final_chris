@@ -164,6 +164,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             profile = Customer_Employees.objects.get(user_id=user.id)
             serializer = CustomerEmployeesSerializer(instance=profile)
             print(serializer.data)
+            print(serializer.data)
+            token['user_permission'] = serializer.data['user_permission']
             token['user_type'] = 'customer'
             print(token['user_type'])
 
