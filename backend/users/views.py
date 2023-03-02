@@ -24,7 +24,7 @@ from django.utils .encoding import force_bytes, force_str
 from django.shortcuts import render
 from django.core.mail import send_mail
 from companies.serializers import CustomersCompanySerializer, SupplierCompanySerializer
-from companies.models import Customers_Company
+from companies.models import Customers_Company, Supplier_Company            
 
 @api_view(['GET'])
 def activate(request, uidb64, token):
@@ -124,20 +124,28 @@ def RegisterUser(request):
         print('tawa bch nsajlou supplier')
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()        
-        sleep(3)    
+            serializer.save()
+        sleep(3) 
+         
         user_id = User.objects.get(username=serializer.data['username'])  
         user_serializer = UserSerializer(instance=user_id)
+        
         serializer = SupplierCompanySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-        # d={'company_id':request.data['company_id'],'user_id':user_serializer.data['id']} 
-        # employee_serializer = CustomerEmployeesSerializer(data=d)
+        sleep(3)    
+        print('now creating the company')    
+        company = Supplier_Company.objects.get(company_owner=user_serializer.data['username'])
+        print('now serializer company')
+        company_serializer = SupplierCompanySerializer(instance=company)    
+        print(company_serializer.data)
+        d={'company_id':company_serializer.data['id'],'user_id':user_serializer.data['id'], 'user_permission':'admin'} 
+        employee_serializer = SupplierEmployeesSerializer(data=d)
 
-        # if employee_serializer.is_valid():
-        #     employee_serializer.save()
+        if employee_serializer.is_valid():
+            employee_serializer.save()
         user_data = user_serializer.data 
-        activateEmail(request,user_data,request.data['email'])    
+        activateEmail(request,user_data,request.data['email']) 
        
     return Response(serializer.data)
    
@@ -171,6 +179,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         except:
             token['user_type'] = 'supplier'
+            profile = Supplier_Employees.objects.get(user_id=user.id)
+            serializer = SupplierEmployeesSerializer(instance=profile)
+            token['user_permission'] = serializer.data['user_permission']
         token['username'] = user.username,
         token['email'] = user.email,
         token['password'] = user.password,
