@@ -12,7 +12,7 @@ class Supplier_Company(models.Model):
     project_size = models.CharField(max_length=200)
     expertise = models.CharField(max_length=50)
     company_type = models.CharField(max_length=50 , default = 'supplier')
-    company_owner = models.CharField(max_length=50,null=True)
+    company_owner = models.CharField(max_length=200, null=True)
 
 
 
@@ -22,4 +22,4 @@ class Customers_Company(models.Model):
     employees_number = models.CharField(max_length=200)
     adress = models.CharField(max_length=200)
     company_type = models.CharField(max_length=50 , default = 'customer')
-    company_owner = models.CharField(max_length=50,null=True)
+    company_owner = models.CharField(max_length=200, null=True)

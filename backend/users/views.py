@@ -23,8 +23,7 @@ from .tokens import account_activation_token
 from django.utils .encoding import force_bytes, force_str
 from django.shortcuts import render
 from django.core.mail import send_mail
-from companies.serializers import CustomersCompanySerializer, SupplierCompanySerializer
-from companies.models import Customers_Company, Supplier_Company            
+
 
 @api_view(['GET'])
 def activate(request, uidb64, token):
@@ -62,34 +61,24 @@ def activateEmail(request, user, to_email):
 
 @api_view(['POST'])
 def ResendactivateEmail(request):
-    print(request.data)
     User = get_user_model()
-    user = User.objects.get(email=request.data['email'])
+    user = User.objects.get(username=request.data['username'])
     user_serializer = UserSerializer(instance=user)
     subject = 'Please Activate Your Account'
     uid= urlsafe_base64_encode(force_bytes(user_serializer.data['id'])),
     token = account_activation_token.make_token(user_serializer.data),
     from_email = 'zicklerchristopher@gmail.com'
-    to_email = str(user_serializer.data['email'])
-    print(to_email)
     for i in uid:
         u_id = i 
     for j in token:
         verif_token = j
-    message = 'hello, here is the new link, '+' , click on the link to activate your account.'+'http://127.0.0.1:8000/users/activate/'+u_id+'/'+verif_token+'/'
-    send_mail(subject, message, from_email, ['mohamedaziz.chibani0@gmail.com'], fail_silently=False)
+    message = 'hello, here is the new link, '+ user['email']+' , click on the link to activate your account.'+'http://127.0.0.1:8000/users/activate/'+u_id+'/'+verif_token+'/'
+    send_mail(subject, message, from_email, [to_email], fail_silently=False)
     try:
         print(force_str(urlsafe_base64_decode(uid)))
     except:
         pass
-    return Response('c bon 3awedna b3athna')
-
-
-
-
-
-
-
+    return('c bon 3awedna b3athna')
 
 
 @api_view(['POST'])
@@ -99,21 +88,16 @@ def RegisterUser(request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            
+             
+       
+
         sleep(3) 
          
         user_id = User.objects.get(username=serializer.data['username'])  
         user_serializer = UserSerializer(instance=user_id)
-        
-        serializer = CustomersCompanySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        sleep(3)    
-        print('now creating the company')    
-        company = Customers_Company.objects.get(company_owner=user_serializer.data['username'])
-        print('now serializer company')
-        company_serializer = CustomersCompanySerializer(instance=company)    
-        print(company_serializer.data)
-        d={'company_id':company_serializer.data['id'],'user_id':user_serializer.data['id'], 'user_permission':'admin'} 
+        profile_serializer = ProfileSerializer(data={'is_email_verified':False})
+        d={'company_id':request.data['company_id'],'user_id':user_serializer.data['id']} 
         employee_serializer = CustomerEmployeesSerializer(data=d)
 
         if employee_serializer.is_valid():
@@ -121,42 +105,25 @@ def RegisterUser(request):
         user_data = user_serializer.data 
         activateEmail(request,user_data,request.data['email'])    
     else:
-        print('tawa bch nsajlou supplier')
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-        sleep(3) 
-         
+            serializer.save()        
+        sleep(3)    
         user_id = User.objects.get(username=serializer.data['username'])  
         user_serializer = UserSerializer(instance=user_id)
-        
-        serializer = SupplierCompanySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        sleep(3)    
-        print('now creating the company')    
-        company = Supplier_Company.objects.get(company_owner=user_serializer.data['username'])
-        print('now serializer company')
-        company_serializer = SupplierCompanySerializer(instance=company)    
-        print(company_serializer.data)
-        d={'company_id':company_serializer.data['id'],'user_id':user_serializer.data['id'], 'user_permission':'admin'} 
+        d={'company_id':request.data['company_id'],'user_id':user_serializer.data['id']} 
         employee_serializer = SupplierEmployeesSerializer(data=d)
-
         if employee_serializer.is_valid():
             employee_serializer.save()
-        user_data = user_serializer.data 
-        activateEmail(request,user_data,request.data['email']) 
-       
     return Response(serializer.data)
    
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        print(user)
         # Add custom claims
         try:
             # profile = Profile.objects.get(profile_owner_id=user.id)
@@ -171,17 +138,10 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
            
             profile = Customer_Employees.objects.get(user_id=user.id)
             serializer = CustomerEmployeesSerializer(instance=profile)
-            print(serializer.data)
-            print(serializer.data)
-            token['user_permission'] = serializer.data['user_permission']
             token['user_type'] = 'customer'
-            print(token['user_type'])
 
         except:
             token['user_type'] = 'supplier'
-            profile = Supplier_Employees.objects.get(user_id=user.id)
-            serializer = SupplierEmployeesSerializer(instance=profile)
-            token['user_permission'] = serializer.data['user_permission']
         token['username'] = user.username,
         token['email'] = user.email,
         token['password'] = user.password,

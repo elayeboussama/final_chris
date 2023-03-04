@@ -15,10 +15,6 @@ from django.utils .encoding import force_bytes, force_str
 from django.shortcuts import render
 from django.core.mail import send_mail
 import json
-from companies.serializers import CustomersCompanySerializer, SupplierCompanySerializer 
-from companies.models import Customers_Company, Supplier_Company
-from users.serializers import RegisterSerializer,UserSerializer
-from time import sleep
 # Create your views here.
 
 
@@ -46,66 +42,12 @@ def getRoutes(request):
 @api_view(['POST'])
 def InviteEmployee(request):
     print(request.data)
-    if request.data['inviter_type']=='customer':
-        print('customer')
-        company = Customers_Company.objects.get(company_owner=request.user.username)
-        company_serializer = CustomersCompanySerializer(instance=company)
-        print(company_serializer.data)
-        permission = request.data['user']['permession']
-        companyName = company_serializer.data['company_name']
-        companyId= company_serializer.data['id']
-        company_type= company_serializer.data['company_type']
-        subject = 'Invitation to join us!'
-        from_email = request.user.email
-        to_email = request.data['user']['email']
-        message = 'you have a new invitation from '+companyName+' to join their company,click on the link to join ' 'http://localhost:5173/registerEmployee/'+permission+'/'+companyName+'/'+to_email+'/'+str(companyId)+'/'+company_type+'/'
-        send_mail(subject, message, from_email, [to_email], fail_silently=False)
-    else:
-        company = Summplier_Company.objects.get(company_owner=request.user.username)
-        company_serializer = SupplierCompanySerializer(instance=company)
-        print(company_serializer.data)
-        permission = request.data['user']['permession']
-        companyName = company_serializer.data['company_name']
-        companyId= company_serializer.data['id']
-        company_type= company_serializer.data['company_type']
-        subject = 'Invitation to join us!'
-        from_email = request.user.email
-        to_email = request.data['user']['email']
-        message = 'you have a new invitation from '+companyName+' to join their company,click on the link to join ' 'http://localhost:5173/registerEmployee/'+permission+'/'+companyName+'/'+to_email+'/'+str(companyId)+'/'+company_type+'/'
-        send_mail(subject, message, from_email, [to_email], fail_silently=False)
-    return Response('5it 3lik')
-
-
-
-
-@api_view(['POST'])
-def RegisterInvitedEmployee(request):
-    print(request.data)
-    if request.data['user']['company_type']=='customer':
-        serializer = RegisterSerializer(data=request.data['user'])
-        if serializer.is_valid():
-            serializer.save()
-        sleep(3)
-        user_id = User.objects.get(username=request.data['user']['username'])  
-        user_serializer = UserSerializer(instance=user_id)
-        d={'company_id':request.data['user']['company_id'],'user_id':user_serializer.data['id'], 'user_permission':request.data['user']['user_permission']}
-        employee_serializer = CustomerEmployeesSerializer(data=d)
-
-        if employee_serializer.is_valid():
-            employee_serializer.save()
-    else:
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        sleep(3)
-        user_id = User.objects.get(username=serializer.data['username'])  
-        user_serializer = UserSerializer(instance=user_id)
-        d={'company_id':request.data['user']['companyNameId'],'user_id':user_serializer.data['id'], 'user_permission':request.data['user']['permession']}
-        employee_serializer = SupplierEmployeesSerializer(data=d)
-
-        if employee_serializer.is_valid():
-            employee_serializer.save()
-    return Response('hello new user')
+    subject = 'Invitation to join us!'
+    from_email = request.data['email']
+    to_email = 'mohamedaziz.chibani0@gmail.com'
+    message = 'ya3tk 3asba you have a new mail from '+ request.data['email']
+    send_mail(subject, message, from_email, [to_email], fail_silently=False)
+    return Response('zabb 3lik')
 
 
 
