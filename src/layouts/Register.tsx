@@ -24,7 +24,7 @@ export default function SignUp() {
   const [firstname, setfirstname] = useState('');
   const [lastname, setlastname] = useState('');
   const [email, setEmail] = useState('');
-  const [emailSender, setEmailSender] = useState('');
+  const [emailSender, setEmailSender] = useState(email);
   const [emailOpen, setEmailOpen] = useState(false);
   const [pwd, setPwd] = useState('');
   const [matchPwd, setMatchPwd] = useState('');
@@ -38,6 +38,7 @@ export default function SignUp() {
   const [employeesNumber, setEmployeesNumber] = useState(0);
   const [open, setOpen] = useState(false);
   const [checkEmailOpen, setCheckEmailOpen] = useState("");
+  const [errorRegister, setErrorRegister] = useState(false);
 
   useEffect(() => {
     console.log("useEffect");
@@ -58,24 +59,29 @@ export default function SignUp() {
     // company_id: {...companyNames.filter(e=> companyName==e.company_name )[0] }.id , company_type: {...companyNames.filter(e=> companyName==e.company_name )[0] }.company_type
 
     await axios.post(endpointsURL.register,
-        JSON.stringify({ username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType }),
+        JSON.stringify(companyType == "supplier" ? { username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType, project_size: ProjectSize, expertise:Expertise, company_owner:user  } : { username: user, email: email, first_name: firstname, last_name: lastname, password: pwd, is_active:false, company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType,company_owner:user  }),
         {
           headers: { 'Content-Type': 'application/json'},
 
         }
       ).then(async (response) => {
         // TODO: remove console.logs before deployment
-      console.log(JSON.stringify(response?.data));
-      await handleCreateCompany()
+      console.log(JSON.stringify(response?.data)); 
+      setErrorRegister(false)
+      setOpen(true)
       setUser('');
       setPwd('');
       setMatchPwd('');
       setfirstname('');
-      setlastname('');
-      setEmail('');
-      navigate('/login', { replace: true });
+      setlastname(''); 
+      setEmployeesNumber(0);
+      setAddress('');
+      setCompanyType(null); 
+      setCompanyName('');
       }).catch(async (err)=>{
-        await handleCreateCompany()
+        setOpen(true)
+        setErrorRegister(true)
+        setTimeout(()=>setErrorRegister(false), 10000);
         if (!err) {
           console.log('No Server Response');
         } else if (err.response?.status === 409) {
@@ -132,64 +138,7 @@ export default function SignUp() {
     }
 
 
-    const handleCreateCompany = async()=>{
-      if(companyType== "customer"){
-        await axios.post("http://127.0.0.1:8000/companies/customer/register/",
-          JSON.stringify({ company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType }),
-          {
-            headers: { 'Content-Type': 'application/json' },
-  
-          }
-        ).then((response) => {
-          // TODO: remove console.logs before deployment
-          console.log(JSON.stringify(response?.data));
-          //window.location.reload(true);
-          setOpen(true)
-        setUser('');
-        setPwd('');
-        setMatchPwd('');
-        setfirstname('');
-        setlastname('');
-        setEmail('');
-        }).catch((err)=>{
-          setOpen(true)
-          if (!err) {
-            console.log('No Server Response');
-          } else if (err.response?.status === 409) {
-            console.log('Username Taken');
-          } else {
-            console.log('Registration Failed')
-          }
-        }) ;
-      }
-      else if( companyType == "supplier"){
-        await axios.post("http://127.0.0.1:8000/companies/supplier/register/",
-          JSON.stringify({ company_name: companyName, adress: address, employees_number: employeesNumber, company_type: companyType, project_size: ProjectSize, expertise:Expertise }),
-          {
-            headers: { 'Content-Type': 'application/json' },
-  
-          }
-        ).then((response) => {
-          // TODO: remove console.logs before deployment
-        console.log(JSON.stringify(response?.data));
-        window.location.reload(true);
-        setUser('');
-        setPwd('');
-        setMatchPwd('');
-        setfirstname('');
-        setlastname('');
-        setEmail('');
-        }).catch((err)=>{
-          if (!err) {
-            console.log('No Server Response');
-          } else if (err.response?.status === 409) {
-            console.log('Username Taken');
-          } else {
-            console.log('Registration Failed')
-          }
-        }) ;
-      }
-    }
+    
 
 
 
@@ -198,8 +147,9 @@ export default function SignUp() {
 
 
     const sendEmail=async()=>{
-      await axios.post("http://127.0.0.1:8000/users/reactivate",
-        JSON.stringify({ email: emailSender }),
+      console.log(email)
+      await axios.post("http://127.0.0.1:8000/users/reactivate/",
+        JSON.stringify({ email: email }),
         {
           headers: { 'Content-Type': 'application/json' },
 
@@ -212,8 +162,7 @@ export default function SignUp() {
       setPwd('');
       setMatchPwd('');
       setfirstname('');
-      setlastname('');
-      setEmail('');
+      setlastname(''); 
       }).catch((err)=>{
         setCheckEmailOpen("false")
         setTimeout(()=>setCheckEmailOpen(""), 10000);
@@ -245,6 +194,14 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+        {errorRegister?
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            Registration failed — <strong>Try again!</strong>
+          </Alert>  
+
+          :""      
+      }
         <CssBaseline />
         <Box
           sx={{
@@ -448,26 +405,7 @@ export default function SignUp() {
                       Check your email please !!  <FcGoogle onClick={()=>{window.open("https://mail.google.com/", '_blank')}} style={{cursor: "pointer"}} size={30}/>
                     </Typography>
                     <Divider />
-                    {emailOpen ?
-
-                        <TextField
-                          value={emailSender}
-                          margin="normal"
-                          required
-                          fullWidth
-                          id="email"
-                          label="Email"
-                          name="email"
-                          autoComplete="email"
-                          onChange={(e) => setEmailSender(e.target.value)}
-                        />
-                  
-                      :""
-                  
-                  }
-                    
-                    {
-                      emailOpen?
+                     
                       <Button
                         type="submit"
                         fullWidth
@@ -475,15 +413,7 @@ export default function SignUp() {
                         sx={{ mt: 3, mb: 2 }}
                         onClick={()=>sendEmail()}
                       >Send Email</Button>
-                      :
-                      <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                      onClick={()=>setEmailOpen(true)}
-                    >Resend Email</Button>
-                    }
+                       
 
 
 

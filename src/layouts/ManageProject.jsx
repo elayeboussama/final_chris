@@ -14,6 +14,7 @@ export const ManageProject = () => {
     const [projectsShared, setProjectsShared] = React.useState()
     const [user, setUser] = React.useState({})
     const [ready, setReady] = React.useState(false)
+    
     const  auth  = useAuthContext();
     const navigate = useNavigate();
     async function fetchData() {
@@ -24,6 +25,8 @@ export const ManageProject = () => {
             setProjects(response.data);
             setReady(true)
         console.log("azzz",response.data);
+        console.log("zeeebbiiiiiiiiiiiiiiiiiiiiiiiii",response.data[0].uploaded)
+       
         const response2 = await axios.get('http://127.0.0.1:8000/projects/external-projects/',
         { headers: { 
           'Content-Type': 'application/json' ,

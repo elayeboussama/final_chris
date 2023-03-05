@@ -21,19 +21,26 @@ function Project() {
   const auth = useAuthContext();
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
+  const [uploaded, setUploaded] = useState('')
   const [description, setDescription] = useState('')
   const [delievery_service, setDelieveryService] = useState("no");
   const [data, setData] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const body = jwt_decode(auth?.user?.access).user_type === 'customer' ? { title, description, delievery_service } : null
+    const formData = new FormData();
+    formData.append('uploaded',uploaded);
+
+    formData.append('title',title);
+    formData.append('description',description);
+    formData.append('delievery_service',delievery_service);
+    const body = jwt_decode(auth?.user?.access).user_type === 'customer' ? { title, description, delievery_service,uploaded } : null
     console.log({ body });
     try {
       await axios.post(APPLICATION_URL,
-        JSON.stringify(body),
+        formData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             "Authorization": `Bearer ${auth?.user?.access}`
           }
         }
@@ -112,6 +119,9 @@ function Project() {
                 onChange={(e) => setDescription(e.target.value)}
                 multiline
               />
+             <div>
+            <input type="file" onChange={(e) => setUploaded(e.target.files[0])} />
+             </div>
               {jwt_decode(auth?.user?.access).user_type === 'customer' ? <FormControlLabel control={<Checkbox checked={delievery_service === "no" ? false : true} onChange={(e) => { e.target.checked ? setDelieveryService("yes") : setDelieveryService("no") }} />} label="delivery service" /> : null}
               <Button
                 type="submit"

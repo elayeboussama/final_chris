@@ -18,4 +18,5 @@ urlpatterns = [
     path('activate/<str:uidb64>/<str:token>/', views.activate, name='activate'),
     path('reactivate/', views.ResendactivateEmail, name='reactivate'),
     
+    
 ]

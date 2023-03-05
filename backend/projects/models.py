@@ -6,6 +6,7 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=100)
     delievery_service = models.CharField(max_length=100, null=True)
+    uploaded = models.FileField(upload_to='projects/files/', null=True)
     status = models.CharField(max_length=1,default='0')
     project_owner = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True)

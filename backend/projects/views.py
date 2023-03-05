@@ -44,6 +44,7 @@ def ProjectCreated(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def ProjectCreate(request):
+    print(request.data)
     serializer = ProjectSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(project_owner=request.user)

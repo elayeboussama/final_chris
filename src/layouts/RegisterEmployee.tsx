@@ -24,32 +24,32 @@ import Container from '@mui/material/Container';
 
 
 export const SignUpEmployee = () => {
-  const navigate = useNavigate();
-  
-
+  const navigate = useNavigate(); 
+  let {permession:paramPermession , companyName : paramCompanyName, email:paramEmail, companyNameId: paramCompanyNameId, companyType:paramCompanyType } = useParams()
   const auth = useAuthContext();
   console.log(auth)
-  const [user,setUser] = useState({companyName:"zriguibaw",username:"",firstname:"",lastname:"",email:"oussama@gmail.com"})
+  const [user,setUser] = useState({company_id:paramCompanyNameId, company_name:paramCompanyName, user_permission:paramPermession,company_type:paramCompanyType ,is_active:true,username:"",first_name:"",last_name:"",email:paramEmail,password:""})
   const [dataIsReady, setDataIsReady] = React.useState(true)
   const [data, setData] = React.useState(null)
-  // const fetchUserProfile = async () => await axios.get("http://127.0.0.1:8000/users/profile/fetch/", {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     "Authorization": `Bearer ${auth?.user?.access}`
-  //   }
+
+
+
+
+
+  const registerEmployee  = async () => await axios.post("http://127.0.0.1:8000/employees/registerinvitedemployee/",{user}, {
+    headers: {
+      'Content-Type': 'application/json',
+      
+    }
     
-  // }).then((response) => {
-  //   console.log(response)
-  //   if (response?.status === 200) {
-  //     setData(response.data)
-  //     setUser({...user,email:response.data.email,companyName:response.data.companyName})
-  //     setDataIsReady(true)
-  //   }
+  }).then((response) => {
+    console.log(response)
+    if (response?.status === 200) {
+      console.log("success")
+      navigate('/login', { replace: true });
+    }
     
-  // });
-  // useEffect(() => {
-  //   fetchUserProfile()
-  // }, [auth])
+  });
 
 
 
@@ -75,10 +75,10 @@ export const SignUpEmployee = () => {
                 <Typography component="h1" variant="h5">
                     Register
                 </Typography>
-                <Box component="form"  noValidate sx={{ mt: 1 }}> 
-                {/* onSubmit={handleSubmit} */}
+                <Box component="form" onSubmit={registerEmployee} noValidate sx={{ mt: 1 }}> 
+                {/*  */}
                 <TextField
-                    defaultValue={user.companyName} 
+                    defaultValue={user.company_name} 
                     margin="normal"
                     required
                     fullWidth
@@ -87,6 +87,19 @@ export const SignUpEmployee = () => {
                     label="companyName"
                     name="companyName"
                     autoComplete="companyName"
+                    focused={true}
+                    
+                    />
+                    <TextField
+                    defaultValue={user.permession} 
+                    margin="normal"
+                    required
+                    fullWidth
+                    disabled={true}
+                    id="permession"
+                    label="permession"
+                    name="permession"
+                    autoComplete="permession"
                     focused={true}
                     
                     />
@@ -135,6 +148,18 @@ export const SignUpEmployee = () => {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    />
+                    <TextField
+                      value={user.password}
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      onChange={(e) => handleChange(e)}
                     />
                     <Button
                     type="submit"

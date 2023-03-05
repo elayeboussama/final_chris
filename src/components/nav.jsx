@@ -25,10 +25,11 @@ function ResponsiveAppBar() {
       {name :'Profile' , Link : "/"}, 
       {name :'create project' , Link : "/project"} , 
       {name :'active projects' , Link : "/activeProjects"},
-      {name :'Add employe' , Link : "/addEmployee"}
-    ] : [
+      jwt_decode(auth?.user?.access).user_permission === "admin" ? {name :'Add employe' , Link : "/addEmployee"} : ""
+    ] :  [
       {name :'Profile' , Link : "/"}, 
-      {name :'apply for project' , Link : "/project"}
+      {name :'apply for project' , Link : "/project"},
+      jwt_decode(auth?.user?.access).user_permission === "admin" ? {name :'Add employe' , Link : "/addEmployee"} : ""
     ];
 
   return (

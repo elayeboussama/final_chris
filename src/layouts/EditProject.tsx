@@ -11,15 +11,14 @@ import axios from '../api/axios';
 export const EditProject = () => {
   const navigate = useNavigate();
   const auth = useAuthContext(); 
-  let {id , title : paramTitle, description : paramDescription, status : paramStatus, role: paramRole} = useParams()
+  let {id , title : paramTitle, description : paramDescription, status : paramStatus, role: paramRole, uploaded:paramUploaded} = useParams()
   const [title, setTitle] = React.useState(paramTitle)
   const [description, setDescription] = React.useState(paramDescription)
   const [status, setStatus] = React.useState(paramStatus)
   const [role, setRole] = React.useState(paramRole)
-  const [admins , setAdmins] = React.useState([{name :'farhat' , role : "admin" , id : "1"} , {name :'aziyaz' , role : "admin" , id : "2"}])
+  const [uploaded, setUploaded] = React.useState(paramUploaded)
   const [memebers , setMembers] = React.useState([])
   const [update , setUpdate] = React.useState(false)
-  const [viewers , setViewers] = React.useState([{name :'jilani' , role : "viewer" , id : "3"} , {name :'tijani' , role : "viewer" , id : "4"}])
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -202,6 +201,7 @@ export const EditProject = () => {
               multiline
               disabled
             />
+            <div>{uploaded}</div>
             
       <Button variant="contained" disabled={role==="viewer"} color="success" onClick={handleClickOpen}>add member</Button >
       <br />

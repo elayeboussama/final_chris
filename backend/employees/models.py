@@ -10,6 +10,7 @@ class Customer_Employees(models.Model):
     
     company_id = models.CharField(max_length=20, null= True)
     user_id = models.CharField(max_length=20, null= True)
+    user_permission = models.CharField(max_length = 20, null=True)
     # user_id = models.ForeignKey(User, null=True, on_delete = models.CASCADE)
 
     
@@ -18,4 +19,5 @@ class Customer_Employees(models.Model):
 class Supplier_Employees(models.Model):
     company_id = models.CharField(max_length=20, null= True)
     user_id = models.CharField(max_length=20, null= True)
+    user_permission = models.CharField(max_length = 20, null=True)
     # user_id = models.ForeignKey(User, null= True , on_delete = models.CASCADE)

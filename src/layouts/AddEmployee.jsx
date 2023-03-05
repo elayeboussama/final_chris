@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import useAuth from "../hooks/useAuth";
 import ListDividers from '../components/list';
 import { useAuthContext } from '../hooks/useAuthContext';
- import axios from '../api/axios';
+import axios from '../api/axios';
 import { jaHira } from 'date-fns/locale';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -19,10 +19,11 @@ import { FormControl, MenuItem, Select } from '@mui/material';
 export const AddEmployee = () => {
   const auth = useAuthContext();
   console.log(auth)
-  const [user,setUser] = useState({permession:"",email:""})
+  const [user,setUser] = useState({permession:"",email:"",})
   const [dataIsReady, setDataIsReady] = React.useState(true)
   const [data, setData] = React.useState(null)
-  const fetchUserProfile = async () => await axios.post("http://127.0.0.1:8000/employees/invite/", {
+  
+  const Add = async () => await axios.post("http://127.0.0.1:8000/employees/invite/", {user,inviter_type:jwt_decode(auth?.user?.access).user_type}, {
     headers: {
       'Content-Type': 'application/json',
       "Authorization": `Bearer ${auth?.user?.access}`
@@ -30,16 +31,10 @@ export const AddEmployee = () => {
     
   }).then((response) => {
     console.log(response)
-    if (response?.status === 200) {
-      setData(response.data)
-      setUser({...user,email:response.data.email,companyName:response.data.companyName})
-      setDataIsReady(true)
-    }
+     
     
   });
-  useEffect(() => {
-    fetchUserProfile()
-  }, [auth])
+
 
 
 
@@ -69,8 +64,8 @@ export const AddEmployee = () => {
                 <Typography component="h1" variant="h5">
                     Add employee
                 </Typography>
-                <Box component="form"  noValidate sx={{ mt: 1 }}> 
-                {/* onSubmit={handleSubmit} */}
+                <Box component="form" onSubmit={Add} noValidate sx={{ mt: 1 }}> 
+                {/* onSubmit={Add} */}
                 
                 
                     <TextField
@@ -127,4 +122,3 @@ export const AddEmployee = () => {
 
   )
 }
-

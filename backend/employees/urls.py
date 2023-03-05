@@ -7,4 +7,5 @@ urlpatterns = [
     path('customer/list/',views.CustomerEmployeeList,name = 'CustomerEmployeeList'),
     path('supplier/list/',views.SupplierEmployeeList,name = 'SupplierEmployeeList'),
     path('invite/',views.InviteEmployee,name = 'Invite'),
+    path('registerinvitedemployee/', views.RegisterInvitedEmployee, name='new'),
 ]
