@@ -66,7 +66,7 @@ export const ManageProject = () => {
                                 {/* <Typography>
                                     {project.description} 
                                 </Typography> */}
-                                <Button variant="contained" onClick={()=> navigate(`edit/${project.id}/${project.title}/${project.description}/${project.status}/admin` )}>
+                                <Button variant="contained" onClick={()=> navigate(`edit/`, {project} )}>
                                     manage
                                 </Button >
                         </Grid>
@@ -86,7 +86,7 @@ export const ManageProject = () => {
                                 {/* <Typography>
                                     {project[2]} 
                                 </Typography> */}
-                                <Button variant="contained" onClick={()=> navigate(`edit/${project[0]}/${project[1]}/${project[3]}/${project[4]}/${project[2]}` )}  >  
+                                <Button variant="contained" onClick={()=> navigate(`edit/`, {project} )}  >  
                                  
                                     manage
                                     
@@ -125,7 +125,7 @@ export const ManageProject = () => {
                                 {/* <Typography>
                                     {project.description} 
                                 </Typography> */}
-                                <Button variant="contained" onClick={()=> navigate(`edit/${project.id}/${project.title}/${project.description}/${project.status}/admin` )}>
+                                <Button variant="contained" onClick={()=> navigate(`edit/`, {project} )}>
                                     manage
                                 </Button >
                         </Grid>
@@ -146,7 +146,7 @@ export const ManageProject = () => {
                                    {/* <Typography>
                                        {project[2]} 
                                    </Typography> */}
-                                   <Button variant="contained" onClick={()=> navigate(`edit/${project[0]}/${project[1]}/${project[3]}/${project[4]}/${project[2]}` )}  >  
+                                   <Button variant="contained" onClick={()=> navigate(`edit/`, {project} )}  >  
                                     
                                        manage
                                        

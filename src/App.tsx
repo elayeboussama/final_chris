@@ -47,7 +47,7 @@ export default function App() {
         <Route path="/addEmployee" element={<AddEmployee/>} /> 
    </Route>
    <Route element={<RequireAuth />}>
-      <Route exact path="/activeProjects/edit/:id/:title/:description/:status/:role/:uploaded" element={<EditProject/>} />
+      <Route exact path="/activeProjects/edit" element={<EditProject/>} />
    </Route>
    <Route element={<RequireAuth />}>
    <Route path="/application" element={<Application/>} /> 

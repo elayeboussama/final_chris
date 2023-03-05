@@ -12,6 +12,7 @@ export const EditProject = () => {
   const navigate = useNavigate();
   const auth = useAuthContext(); 
   let {id , title : paramTitle, description : paramDescription, status : paramStatus, role: paramRole, uploaded:paramUploaded} = useParams()
+  console.log(paramUploaded)
   const [title, setTitle] = React.useState(paramTitle)
   const [description, setDescription] = React.useState(paramDescription)
   const [status, setStatus] = React.useState(paramStatus)
@@ -99,7 +100,7 @@ export const EditProject = () => {
         setStatus(response.data.status)
         setRole(response.data.role)
         console.log("zzzssz",response.data)
-         navigate(`/activeProjects/edit/${id}/${response.data.title}/${response.data.description}/${response.data.status}/admin`, { replace: true })
+        //  navigate(`activeProjects/edit/`, {id , title : paramTitle, description : paramDescription, status : paramStatus, role: paramRole, uploaded:paramUploaded})
         
 
 
@@ -228,6 +229,17 @@ export const EditProject = () => {
         :""
         
         }
+
+
+
+<Button
+      disabled={role==="viewer"} 
+      onClick={()=> navigate(`http://127.0.0.1:8000/${paramUploaded}`)}
+        fullWidth
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+      >Download File</Button>
+
 
 
 
